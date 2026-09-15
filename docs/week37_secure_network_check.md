@@ -4,7 +4,7 @@
 till skillnad från en ren moln-VM i OCI med dedikerad vNIC/säkerhetslista.
 
 -Jag slår först in "ip addr" i min terminal för att kontrollera min nätverksinterface och sedan "ip route". 
-Vilket Ger mig bland annt min IP-adress, interface och default gateway.
+Vilket Ger mig bland annat min IP-adress, interface och default gateway.
 
 -Jag ser min lokala IP-adress som skiljer sig från mitt privata som tillhör datorn och sen sklijer sig från routerns publika adress som används för att skicka och ta emot information via nätverket.
 
