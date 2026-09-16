@@ -42,3 +42,20 @@ Vilket Ger mig bland annat min IP-adress, interface och default gateway.
 -Med "ps" så ser jag endast de processer som hör till den nuvarande terminalen. Men om jag istället kör "ps aux" så kan jag se alla processer i hela systemet.
 
 <!-- END DEL B -->
+
+<!-- START DEL D -->
+
+(Normalfall 1)
+DNS-Uppslaget fungerar med en tydlig markering [OK].
+
+(Normalfall 2)
+Efter att programmet startar en lokal testport på 8080, visar programmet tydligt med [IS AVAILABLE].
+Den skriver ut porten som nu blir 8080.
+
+(Felfall 1)
+Jag tar bort domänen som ska testas och programmet kraschar inte men visar tydligt statusen med [FAIL].
+
+(Felfall 2)
+Om jag ändrar port 8080 till 80 och kör programmet så visar det port 80 [IS NOT AVAILABLE] och sammanfattningen som visas i loggen visar att 2 kontroller lyckades och en misslyckades.
+
+<!-- END DEL D -->

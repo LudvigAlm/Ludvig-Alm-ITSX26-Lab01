@@ -13,26 +13,28 @@ successful_checks=0 # Variabel för att hålla reda på antalet lyckade kontroll
 failed_checks=0 # Variabel för att hålla reda på antalet misslyckade kontroller
 date=$(date '+%Y-%m-%d %H:%M:%S') # Hämta det aktuella datumet och tiden för en timestamp på loggen
 
-adress=$(hostname -i)
+adress=$(hostname -i) # Använder "hostname -i" istället för att använda "ip addr". "ip addr" ger flera adresser och är mer komplext
 route=$(ip route)
 
 echo "IP Address: $adress" # Skriver ut den lokalas IP-adress
 
-sleep 1
+sleep 2
 
 echo "Din Route: $route" # Skriver ut den lokala routen
 
 sleep 2
 
-okdoman="example.com"
+okdoman="example.com" # Sätt domänen som ska kontrolleras
 
 echo "kontrollerar DNS för: $okdoman" # Skriver ut domänen som kontrolleras
 
+sleep 2
+
 if getent ahosts "$okdoman" > /dev/null 2>&1; then  # Kontrollera DNS-uppslag
-    echo "DNS-uppslag lyckades för $okdoman." # Skriver ut ett meddelande om att DNS-uppslag lyckades
+    echo "DNS-uppslag [OK] $okdoman." # Skriver ut ett meddelande om att DNS-uppslag lyckades
     successful_checks=$((successful_checks + 1))
 else
-    echo "DNS-uppslag misslyckades för $okdoman." # Skriver ut ett meddelande om att DNS-uppslag misslyckades
+    echo "DNS-uppslag [FAIL] $okdoman." # Skriver ut ett meddelande om att DNS-uppslag misslyckades
     failed_checks=$((failed_checks + 1))
 fi # Avslutar "if"-satsen
 
@@ -49,11 +51,13 @@ sleep 2
 
 echo "Kontrollerar lokal värd: $lokalvard" # Skriver ut den lokala värden som kontrolleras
 
+sleep 2
+
 if getent hosts "$lokalvard" > /dev/null 2>&1; then
-    echo "Lokalhost fungerar." # Skriver ut ett meddelande om att localhost fungerar
+    echo "Lokalhost [OK]." # Skriver ut ett meddelande om att localhost fungerar
     successful_checks=$((successful_checks + 1))
 else
-    echo "Lokalhost fungerar inte." # Skriver ut ett meddelande om att
+    echo "Lokalhost [FAIL]." # Skriver ut ett meddelande om att
     failed_checks=$((failed_checks + 1))
 fi
 
@@ -61,11 +65,13 @@ sleep 2
 
 echo "Kontrollerar lokal testport: $testport" # Skriver ut den lokala testporten som kontrolleras
 
+sleep 2
+
 if timeout 2 bash -c ":</dev/tcp/$lokalvard/$testport" > /dev/null 2>&1; then # Kontrollera om porten är öppen
-    echo "Tjänsten på port $testport är öppen." # Skriver ut ett meddelande om att tjänsten på porten är öppen
+    echo "Tjänsten på port $testport [IS AVAILABLE]." # Skriver ut ett meddelande om att tjänsten på porten är öppen
     successful_checks=$((successful_checks + 1))
 else
-    echo "Tjänsten på port $testport är inte tillgänlig." # Skriver ut ett meddelande om att tjänsten på porten inte är tillgänglig
+    echo "Tjänsten på port $testport [IS NOT AVAILABLE]." # Skriver ut ett meddelande om att tjänsten på porten inte är tillgänglig
     failed_checks=$((failed_checks + 1))
 fi # Avslutar "if"-satsen
 
@@ -76,13 +82,28 @@ fi
 sleep 2
 
 echo ""
-echo "Sammanfattning: $successful_checks kontroller lyckades, $failed_checks kontroller misslyckades."
-echo "Datum och tid för loggen: $date"
-echo "Logg sparad i: $log_file"
+echo "Sammanfattning: $successful_checks kontroller [SUCCESS], $failed_checks kontroller [FAIL]." # Skriver ut en sammanfattning av antalet lyckade och misslyckade kontroller
+echo "Datum och tid för loggen: $date" # Skriver ut datum och tid för loggen
+echo "Logg sparad i: $log_file" # Skriver ut sökvägen till loggfilen
+
+sleep 1
+
+echo ""
+
+echo "Väntar på öppna portar..."
+sleep 2
+echo "..."
+sleep 1
+echo "*.."
+sleep 1
+echo "**."
+sleep 1
+echo "***"
+sleep 1
 
 echo "Öppna portar-->" # Skriver ut rubriken för öppna portar
-if command -v ss > /dev/null 2>&1; then
-    ss -tuln || echo "Kunde inte läsa listan över öppna portar."
+if command -v ss > /dev/null 2>&1; then # Kontrollera om kommandot ss finns i miljön
+    ss -tuln || echo "Kunde inte läsa listan över öppna portar." # Skriver ut ett meddelande om att listan över öppna portar inte kunde läsas
 else
-    echo "Kommandot ss finns inte i miljön."
+    echo "Kommandot ss finns inte i miljön." # Skriver ut ett meddelande om att kommandot ss inte finns i miljön
 fi
