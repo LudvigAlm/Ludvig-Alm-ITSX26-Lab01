@@ -1,4 +1,6 @@
 [WEEK 38 Network Traffic Investigation]
+
+<!-- Start DEL B -->
 Den lokala datorns näteverksinterface har en MAC-adress 34:2c:**:**:**:7a (Visar inte hela)
 Wireshark visar även att den kommunicerar med en ASUS-enhet med MAC-adressen. ASUS-adressen måste bero på att jag har ett ASUS moderkort i datorn i detta fallet.
 Pcap filen visar även Ipv6-adressen.
@@ -29,4 +31,24 @@ I detta fall skulle brandväggen exempelvis kunna kontrollera UDP-trafik från D
 Transportprotokollet är UDP och källporten är 53 medans destinationsporten är 55567
 
 Applikationsprotokollet är en DNS och DNS används här för att slå upp information om www.google.com
+<!-- End DEL B -->
 
+<!-- Del C ligger i docx-filen week38_del_c.docx -->
+
+<!-- Start DEL D -->
+Jag väljer en TCP från min pcap-fil och finner först [Stream Packet Number: 4].
+Jag kollar även på källa och destination och då är källan CompalBroadb_86:1b:7a medans destinationen är ASUSTekCOMPU_34:e0:61 etc.
+En källa port syns med port 443 och även en destinations port 56937.
+TCP visar en händelseordning först med SYN-SYN/ACK-ACK-Data-FIN och slutar på RST
+Datorns förvantande beteende visar att källan skickar till destiantionen och får bekräftat tillbaka med ACK.
+Jag kan tydligt se dom tre olika paketen SYN, SYN-ACK och ACK för en faktisk obsevation.
+Jag hittade en rödmarkerad TCP där ACK sekvensen har flaggats som en dubblett.
+
+
+I en TLS visas [Stream Packet Number: 61].
+Källan och destinationen är det samma som i TCP.
+Porternas källa och destination stämmer även också som på TCP.
+TLS händelseordning går också SYN,SYN-ACK,ACK etc...
+Inom TLS rapporten förväntas att ACK ska skickas tillbaka med svar och får även bekräftat svar tillbaka med ACK.
+I TLS finner jag en blåmarkerad avvikelse TLSv1.3 Record Layer som är krypterad data. Den säger även att TLS 1.2 och att den (Legacy_version) måste ignoreras.
+<!-- End DEL D -->
