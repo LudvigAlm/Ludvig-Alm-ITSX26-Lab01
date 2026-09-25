@@ -3,9 +3,9 @@ import os
 import re
 from collections import Counter
 
-
-DATA_DIR = "data"
-OUTPUT_DIR = "output"
+# Sökvägar till filer
+DATA_DIR = "week39-security-automation/data"
+OUTPUT_DIR = "week39-security-automation/output"
 AUTH_LOG = os.path.join(DATA_DIR, "auth.log")
 ACCESS_LOG = os.path.join(DATA_DIR, "access.log")
 SUSPICIOUS_IPS_FILE = os.path.join(DATA_DIR, "suspicious_ips.txt")
@@ -39,14 +39,17 @@ def parse_logs():
                 if not line_str:
                     continue
 
+                # Matcha IP-adress
                 match = IP_REGEX.search(line_str)
                 if match:
                     ip = match.group(1)
                     ip_counter[ip] += 1
 
+                    # Räkna misslyckade inloggningar i auth.log
                     if "auth Failed login" in line_str:
                         failed_logins[ip] += 1
                 else:
+                    # Raden saknade giltlig IP-struktur/format
                     malformed_lines += 1
 
     return ip_counter, failed_logins, total_parsed_lines, malformed_lines
