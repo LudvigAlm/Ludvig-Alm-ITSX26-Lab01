@@ -43,4 +43,4 @@ Tre testfall har genomförts och verifierats manuellt:
 
 ## Redovisning av AI-användning
 - **AI-verktyg**: ChatGPT/Gemini
-- **Användningsområde**: AI har använts för minimal kodstrukturering, skapande av regex och vägledning för sparande av output-fil.
+- **Användningsområde**: AI har använts för viss kodstrukturering, skapande av regex och vägledning för sparande av output-fil.
